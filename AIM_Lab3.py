@@ -9,34 +9,34 @@ ps.set_option('display.max_rows', None)
 ps.set_option('display.max_columns', None)
 ps.set_option('display.max_colwidth', None)
 
-#„H„p„t„p„~„y„u „Š„p„„{„y
+#Set header
 header = ['id', 'fullName', 'sex', 'yearOfBirth', 'enrolled', 'department', 'job', 'pay', 'completedProjects']
 
-#„H„p„t„p„~„y„u „r„€„x„}„€„w„~„„‡ „x„~„p„‰„u„~„y„z „t„|„‘ „„€„|„p
+#Set enum values for Sex
 class Sex(Enum):
     Male = 0
     Female = 1
 
-#„H„p„t„p„~„y„u „r„€„x„}„€„w„~„„‡ „x„~„p„‰„u„~„y„z „t„|„‘ „„€„t„‚„p„x„t„u„|„u„~„y„‘
+#Set enum values for Department
 class Department(Enum):
     Main = 0
     Auxiliary = 1
     Support = 2
 
-#„H„p„t„p„~„y„u „r„€„x„}„€„w„~„„‡ „x„~„p„‰„u„~„y„z „t„|„‘ „D„€„|„w„~„€„ƒ„„„y
+#Set enum values for Job
 class Job(Enum):
     Developer = 0
     Tester = 1
     Support = 2
 
-#„H„p„„y„ƒ„ „r „†„p„z„|
+#Write to file
 with open('test.csv', 'w') as f:
     writer = csv.writer(f)
-    #„H„p„„y„ƒ„ „Š„p„„{„y
+    #Write header
     writer.writerow(header)
-    #„B„„q„€„‚ „ƒ„|„…„‰„p„z„~„€„s„€ „{„€„|„y„‰„u„ƒ„„„r„p „ƒ„„„‚„€„{ „€„„ 1001 „t„€ 2000
+    #Set a random number of rows from 1001 to 2000
     nRows = random.randint(1001, 2000);
-    #„H„p„„y„ƒ„ „ƒ„„„‚„€„{
+    #Write rows
     for i in range(0, nRows):
         row = []
         sex = random.choice(list(Sex))
