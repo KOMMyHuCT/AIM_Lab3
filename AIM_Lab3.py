@@ -2,7 +2,6 @@ import csv
 import pandas
 import numpy
 from enum import Enum
-import random
 import names
 import matplotlib.pyplot as pyplot
 pandas.set_option('display.max_rows', None)
@@ -35,15 +34,15 @@ with open('test.csv', 'w') as f:
     #Write header
     writer.writerow(header)
     #Pick a random number of rows between 1001 and 2000
-    nRows = random.randint(1001, 2000);
+    nRows = numpy.random.randint(1001, 2000);
     #Write rows
     for i in range(0, nRows):
         row = []
-        sex = random.choice(list(Sex)).name
+        sex = numpy.random.choice(list(Sex)).name
         if sex == Sex.Male:
-            row = [i, names.get_first_name('male') + " " + names.get_last_name(), sex, random.randint(1940, 2004), random.randint(2010, 2022), random.choice(list(Department)).name, random.choice(list(Job)).name, round(random.uniform(20000, 60000), 2), random.randint(0, 10)]
+            row = [i, names.get_first_name('male') + " " + names.get_last_name(), sex, numpy.random.randint(1940, 2004), numpy.random.randint(2010, 2022), numpy.random.choice(list(Department)).name, numpy.random.choice(list(Job)).name, round(numpy.random.uniform(20000, 60000), 2), numpy.random.randint(0, 10)]
         else:
-            row = [i, names.get_first_name('female') + " " + names.get_last_name(), sex, random.randint(1940, 2004), random.randint(2010, 2022), random.choice(list(Department)).name, random.choice(list(Job)).name, round(random.uniform(20000, 60000), 2), random.randint(0, 10)]
+            row = [i, names.get_first_name('female') + " " + names.get_last_name(), sex, numpy.random.randint(1940, 2004), numpy.random.randint(2010, 2022), numpy.random.choice(list(Department)).name, numpy.random.choice(list(Job)).name, round(numpy.random.uniform(20000, 60000), 2), numpy.random.randint(0, 10)]
         writer.writerow(row)
 
 pay = []
