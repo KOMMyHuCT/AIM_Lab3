@@ -1,16 +1,16 @@
 import csv
-import pandas as ps
-import statistics
+import pandas
+import numpy
+from enum import Enum
 import random
 import names
 import matplotlib.pyplot as pyplot
-from enum import Enum
-ps.set_option('display.max_rows', None)
-ps.set_option('display.max_columns', None)
-ps.set_option('display.max_colwidth', None)
+pandas.set_option('display.max_rows', None)
+pandas.set_option('display.max_columns', None)
+pandas.set_option('display.max_colwidth', None)
 
 #Set header
-header = ['id', 'fullName', 'sex', 'yearOfBirth', 'enrolled', 'department', 'job', 'pay', 'completedProjects']
+header = ['id', 'fullName', 'sex', 'born', 'enrolled', 'department', 'job', 'pay', 'completedProjects']
 
 #Set enum values for Sex
 class Sex(Enum):
@@ -34,42 +34,72 @@ with open('test.csv', 'w') as f:
     writer = csv.writer(f)
     #Write header
     writer.writerow(header)
-    #Set a random number of rows from 1001 to 2000
+    #Pick a random number of rows between 1001 and 2000
     nRows = random.randint(1001, 2000);
     #Write rows
     for i in range(0, nRows):
         row = []
-        sex = random.choice(list(Sex))
+        sex = random.choice(list(Sex)).name
         if sex == Sex.Male:
-            row = [i, names.get_first_name('male') + " " + names.get_last_name(), sex, random.randint(1940, 2004), random.randint(2010, 2022), random.choice(list(Department)), random.choice(list(Job)), random.randint(20000, 60000), random.randint(0, 10)]
+            row = [i, names.get_first_name('male') + " " + names.get_last_name(), sex, random.randint(1940, 2004), random.randint(2010, 2022), random.choice(list(Department)).name, random.choice(list(Job)).name, round(random.uniform(20000, 60000), 2), random.randint(0, 10)]
         else:
-            row = [i, names.get_first_name('female') + " " + names.get_last_name(), sex, random.randint(1940, 2004), random.randint(2010, 2022), random.choice(list(Department)), random.choice(list(Job)), random.randint(20000, 60000), random.randint(0, 10)]
+            row = [i, names.get_first_name('female') + " " + names.get_last_name(), sex, random.randint(1940, 2004), random.randint(2010, 2022), random.choice(list(Department)).name, random.choice(list(Job)).name, round(random.uniform(20000, 60000), 2), random.randint(0, 10)]
         writer.writerow(row)
 
 pay = []
+born = []
+job = []
 with open('test.csv') as f:
     reader = csv.DictReader(f)
     for row in reader:
         #print(row)
         pay.append(float(row['pay']))
-    print('\nMax of Pay:\n', max(pay))
-    print('\nMin of Pay:\n', min(pay))
-    print('\nMean of Pay:\n', statistics.mean(pay))
-    print('\nDispersion of Pay:\n', max(pay) - min(pay))
-    print('\nStandard deviation of Pay:\n', statistics.stdev(pay))
-    print('\nMedian of Pay:\n', statistics.median(pay))
+        born.append(int(row['born']))
+        job.append(row['job'])
 
-dataframe = ps.read_csv('test.csv')
+    print('\nPay (csv.DictReader):')
+    print('Max: ', max(pay))
+    print('Min: ', min(pay))
+    print('Mean: ', numpy.mean(pay))
+    print('Dispersion: ', numpy.ptp(pay))
+    print('Standard deviation: ', numpy.std(pay))
+    print('Median: ', numpy.median(pay))
+
+    print('\nBorn (csv.DictReader):')
+    print('Max: ', max(born))
+    print('Min: ', min(born))
+    print('Mean: ', numpy.mean(born))
+    print('Dispersion: ', numpy.ptp(born))
+    print('Standard deviation: ', numpy.std(born))
+    print('Median: ', numpy.median(born))
+
+    print('\nJob (csv.DictReader):')
+    print('Mode: ', max(job))
+
+dataframe = pandas.read_csv('test.csv')
 print('\nDescription:\n', dataframe.describe())
 print('\nCount:\n', dataframe.count())
 #print('\nDuplicated:\n', dataframe.duplicated(keep = False))
 #print('\nIs N/A:\n', dataframe.isna())
-print('\nMax of Pay:\n', max(dataframe['pay']))
-print('\nMin of Pay:\n', min(dataframe['pay']))
-print('\nMean of Pay:\n', statistics.mean(dataframe['pay']))
-print('\nDispersion of Pay:\n', max(dataframe['pay']) - min(dataframe['pay']))
-print('\nStandard deviation of Pay:\n', statistics.stdev(dataframe['pay']))
-print('\nMedian of Pay:\n', statistics.median(dataframe['pay']))
+
+print('\nPay (Dataframe):')
+print('Max: ', max(dataframe['pay']))
+print('Min: ', min(dataframe['pay']))
+print('Mean: ', numpy.mean(dataframe['pay']))
+print('Dispersion: ', numpy.ptp(dataframe['pay']))
+print('Standard deviation: ', numpy.std(dataframe['pay']))
+print('Median: ', numpy.median(dataframe['pay']))
+
+print('\nBorn (Dataframe):')
+print('Max: ', max(dataframe['born']))
+print('Min: ', min(dataframe['born']))
+print('Mean: ', numpy.mean(dataframe['born']))
+print('Dispersion: ', numpy.ptp(dataframe['born']))
+print('Standard deviation: ', numpy.std(dataframe['born']))
+print('Median: ', numpy.median(dataframe['born']))
+
+print('\nJob (Dataframe):')
+print('Mode: ', numpy.max(dataframe['job']))
 
 pyplot.scatter(dataframe['enrolled'], dataframe['pay'])
 pyplot.title('Dependence of salary on the year of enrollment')
